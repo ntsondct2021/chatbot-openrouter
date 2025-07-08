@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot miễn phí - OpenRouter</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>🤖 Chatbot OpenRouter</h2>
+  <textarea id="userInput" placeholder="Nhập câu hỏi..."></textarea><br>
+  <button onclick="sendMessage()">Gửi</button>
+  <div class="chat-box" id="chatBox"></div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const chatBox = document.getElementById("chatBox");
+      const message = input.value.trim();
+      if (!message) return;
+
+      chatBox.innerHTML += `👤 Bạn: ${message}<br>`;
+      input.value = "";
+
+      const res = await fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: message })
+      });
+
+      const data = await res.json();
+      if (data.reply) {
+        chatBox.innerHTML += `🤖 GPT: ${data.reply}<br><br>`;
+      } else {
+        chatBox.innerHTML += `❌ Lỗi: ${data.error}<br><br>`;
+      }
+
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
