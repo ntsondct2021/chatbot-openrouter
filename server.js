@@ -1,3 +1,4 @@
+console.log(process.env.OPENROUTER_API_KEY)
 const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config();
